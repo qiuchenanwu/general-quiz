@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# 虚拟环境
+.venv/
+venv/
+
+# Django 运行时
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+media/
+logs/
+
+# 运行时缓存与临时
+.quiz-cache/
+.tmp/
+*.log
+
+# 环境变量（含密钥）
+.env
+.env.local
+.env.*.local
+
+# 编辑器
+.idea/
+.vscode/
+*.swp

@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "id": "example",
+    "title": "示例题库",
+    "subject": "通用",
+    "description": "用来演示刷题站的最小题库（3 道题，覆盖三种题型）。丢进首页就能刷。",
+    "license": "CC0",
+    "counts": {
+      "single": 2,
+      "multiple": 0,
+      "judge": 1
+    }
+  },
+  "questions": [
+    {
+      "no": 1,
+      "type": "single",
+      "stem": "中国的首都是哪座城市？",
+      "options": [
+        { "key": "A", "text": "上海" },
+        { "key": "B", "text": "北京" },
+        { "key": "C", "text": "广州" },
+        { "key": "D", "text": "深圳" }
+      ],
+      "answer": ["B"],
+      "analysis": "北京是中华人民共和国的首都，自 1949 年 10 月 1 日起。",
+      "tags": ["地理常识"]
+    },
+    {
+      "no": 2,
+      "type": "single",
+      "stem": "下面哪一种语言是面向对象编程语言？",
+      "options": [
+        { "key": "A", "text": "HTML" },
+        { "key": "B", "text": "CSS" },
+        { "key": "C", "text": "Python" },
+        { "key": "D", "text": "JSON" }
+      ],
+      "answer": ["C"],
+      "analysis": "Python、Java、C++ 等都是面向对象编程语言；HTML / CSS / JSON 是标记或数据格式。",
+      "tags": ["编程基础"]
+    },
+    {
+      "no": 3,
+      "type": "judge",
+      "stem": "光速比声速快。",
+      "answer": ["T"],
+      "analysis": "光在真空中的速度约 30 万 km/s，声音在空气中的速度约 340 m/s。",
+      "tags": ["物理常识"]
+    }
+  ]
+}

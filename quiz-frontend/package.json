@@ -1,0 +1,38 @@
+{
+  "name": "quiz-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "通用刷题网站前端（Vue3 + Vite + Element Plus）· 丢一个 JSON 就能刷",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --host",
+    "test": "node --import ./tests/alias-loader.mjs tests/test_engine.mjs",
+    "check": "node --experimental-vm-modules ../tools/check_sfc.mjs"
+  },
+  "dependencies": {
+    "@codemirror/autocomplete": "^6.20.3",
+    "@codemirror/commands": "^6.11.1",
+    "@codemirror/lang-java": "^6.0.2",
+    "@codemirror/lang-javascript": "^6.2.5",
+    "@codemirror/lang-vue": "^0.1.3",
+    "@codemirror/language": "^6.13.1",
+    "@codemirror/state": "^6.7.6",
+    "@codemirror/view": "^6.43.14",
+    "@element-plus/icons-vue": "^2.3.1",
+    "aplayer": "^1.10.1",
+    "element-plus": "^2.9.1",
+    "pdfjs-dist": "^6.4.299",
+    "pinia": "^2.3.0",
+    "tesseract.js": "^7.0.0",
+    "three": "^0.186.1",
+    "vanta": "^0.5.24",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.0.7"
+  }
+}

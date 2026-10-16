@@ -1,0 +1,424 @@
+/* ==========================================================================
+   刷题站设计系统 —— 所有颜色/圆角/阴影都走 CSS 变量，换肤只改变量
+   ========================================================================== */
+
+:root {
+  /* 品牌渐变 */
+  --q-brand-1: #6366f1;
+  --q-brand-2: #8b5cf6;
+  --q-brand-3: #ec4899;
+  --q-grad: linear-gradient(135deg, var(--q-brand-1) 0%, var(--q-brand-2) 52%, var(--q-brand-3) 100%);
+  --q-grad-soft: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(236, 72, 153, 0.1));
+
+  /* 语义色 */
+  --q-ok: #10b981;
+  --q-ok-bg: rgba(16, 185, 129, 0.12);
+  --q-bad: #ef4444;
+  --q-bad-bg: rgba(239, 68, 68, 0.12);
+  --q-warn: #f59e0b;
+  --q-warn-bg: rgba(245, 158, 11, 0.14);
+  --q-star: #f59e0b;
+
+  /* 中性色（浅色主题） */
+  --q-bg: #f4f6fb;
+  --q-bg-deep: #eaeef7;
+  --q-surface: #ffffff;
+  --q-surface-2: #f7f8fc;
+  --q-surface-3: #eef1f8;
+  --q-text: #1a1f2e;
+  --q-text-2: #5b6478;
+  --q-text-3: #98a1b5;
+  --q-border: rgba(26, 31, 46, 0.09);
+  --q-border-strong: rgba(26, 31, 46, 0.16);
+  --q-shadow-sm: 0 1px 2px rgba(20, 26, 46, 0.05), 0 2px 6px rgba(20, 26, 46, 0.04);
+  --q-shadow: 0 2px 6px rgba(20, 26, 46, 0.05), 0 10px 28px rgba(20, 26, 46, 0.07);
+  --q-shadow-lg: 0 10px 40px rgba(20, 26, 46, 0.12), 0 2px 8px rgba(20, 26, 46, 0.06);
+  --q-shadow-brand: 0 8px 26px rgba(99, 102, 241, 0.3);
+
+  /* 形状与动效 */
+  --q-r-xs: 8px;
+  --q-r-sm: 12px;
+  --q-r: 16px;
+  --q-r-lg: 22px;
+  --q-r-full: 999px;
+  --q-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --q-dur: 0.28s;
+
+  --q-maxw: 1220px;
+  --q-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'Source Han Sans SC', 'Noto Sans CJK SC', sans-serif;
+  --q-mono: 'SF Mono', 'JetBrains Mono', Consolas, 'Courier New', monospace;
+
+  /* 题干字号：设置面板可调 */
+  --q-stem-size: 19px;
+  --q-opt-size: 16px;
+}
+
+/* --------------------------- 暗色主题 --------------------------- */
+html.dark {
+  --q-bg: #0e1016;
+  --q-bg-deep: #080a0f;
+  --q-surface: #171a23;
+  --q-surface-2: #1d212c;
+  --q-surface-3: #232734;
+  --q-text: #e9ecf3;
+  --q-text-2: #a2aabd;
+  --q-text-3: #6f7891;
+  --q-border: rgba(255, 255, 255, 0.08);
+  --q-border-strong: rgba(255, 255, 255, 0.16);
+  --q-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --q-shadow: 0 2px 8px rgba(0, 0, 0, 0.35), 0 12px 32px rgba(0, 0, 0, 0.3);
+  --q-shadow-lg: 0 12px 44px rgba(0, 0, 0, 0.5);
+  --q-shadow-brand: 0 8px 26px rgba(99, 102, 241, 0.4);
+  --q-ok-bg: rgba(16, 185, 129, 0.16);
+  --q-bad-bg: rgba(239, 68, 68, 0.16);
+  --q-warn-bg: rgba(245, 158, 11, 0.18);
+  --q-grad-soft: linear-gradient(135deg, rgba(99, 102, 241, 0.18), rgba(236, 72, 153, 0.12));
+}
+
+/* --------------------------- 基础 --------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--q-font);
+  color: var(--q-text);
+  background-color: var(--q-bg);
+  background-image:
+    radial-gradient(1100px 520px at 8% -12%, rgba(99, 102, 241, 0.14), transparent 62%),
+    radial-gradient(900px 480px at 96% 4%, rgba(236, 72, 153, 0.1), transparent 60%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--q-dur) var(--q-ease), color var(--q-dur) var(--q-ease);
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(99, 102, 241, 0.28);
+}
+
+/* 细滚动条 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--q-border-strong);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--q-text-3);
+  background-clip: content-box;
+}
+
+/* --------------------------- 通用原子类 --------------------------- */
+.q-wrap {
+  width: 100%;
+  max-width: var(--q-maxw);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.q-card {
+  background: var(--q-surface);
+  border: 1px solid var(--q-border);
+  border-radius: var(--q-r);
+  box-shadow: var(--q-shadow-sm);
+  transition: box-shadow var(--q-dur) var(--q-ease), transform var(--q-dur) var(--q-ease),
+    border-color var(--q-dur) var(--q-ease);
+}
+
+.q-card--hover:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--q-shadow);
+  border-color: var(--q-border-strong);
+}
+
+.q-grad-text {
+  background: var(--q-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.q-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  padding: 0 11px;
+  border-radius: var(--q-r-full);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  background: var(--q-surface-3);
+  color: var(--q-text-2);
+  border: 1px solid transparent;
+  transition: all var(--q-dur) var(--q-ease);
+}
+
+.q-chip--brand {
+  background: rgba(99, 102, 241, 0.13);
+  color: var(--q-brand-1);
+}
+html.dark .q-chip--brand {
+  color: #a5b0ff;
+}
+.q-chip--ok {
+  background: var(--q-ok-bg);
+  color: var(--q-ok);
+}
+.q-chip--bad {
+  background: var(--q-bad-bg);
+  color: var(--q-bad);
+}
+.q-chip--warn {
+  background: var(--q-warn-bg);
+  color: var(--q-warn);
+}
+
+.q-clickable {
+  cursor: pointer;
+}
+
+.q-muted {
+  color: var(--q-text-2);
+}
+.q-dim {
+  color: var(--q-text-3);
+}
+
+.q-num {
+  font-family: var(--q-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 进场动画 */
+@keyframes q-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes q-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes q-shake {
+  10%,
+  90% {
+    transform: translateX(-2px);
+  }
+  30%,
+  70% {
+    transform: translateX(3px);
+  }
+  50% {
+    transform: translateX(-4px);
+  }
+}
+@keyframes q-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 0 14px rgba(99, 102, 241, 0);
+  }
+}
+
+.q-rise {
+  animation: q-rise 0.42s var(--q-ease) both;
+}
+.q-pop {
+  animation: q-pop 0.3s var(--q-ease) both;
+}
+.q-shake {
+  animation: q-shake 0.4s var(--q-ease);
+}
+
+/* 题干里的填空占位：由 core/text.js 的 stemHtml() 产出。
+   题库里写的是 "(  )"，直接渲染会被 HTML 折叠成 "()"，所以换成一条下划线。 */
+.q-blank {
+  display: inline-block;
+  width: 3em;
+  height: 1em;
+  margin: 0 3px;
+  vertical-align: -0.12em;
+  border-bottom: 2px solid color-mix(in srgb, var(--q-brand-1) 55%, transparent);
+  background: color-mix(in srgb, var(--q-brand-1) 8%, transparent);
+  border-radius: 2px;
+}
+
+/* 题干里的行内代码：由 core/text.js 的 stemHtml() 产出（题干里的 `ref()`）。
+   必须是**全局**样式：题干是 v-html 渲染的，scoped 样式够不着它。 */
+.q-code {
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: var(--q-surface-3);
+  color: var(--q-brand-1);
+  font-family: var(--q-mono);
+  font-size: 0.92em;
+}
+
+/* 代码面板：**浅色主题下也用深色** —— 一眼就认得"这是代码"，
+   而不是"一段字体不太一样的正文"（用户原话：好好的代码怎么和文本一样，不显眼）。 */
+:root {
+  --q-code-bg: #191d29;
+  --q-code-bg-2: #12151e;
+  --q-code-text: #e7ebf5;
+  --q-code-dim: #7c86a2;
+  --q-code-line: rgba(255, 255, 255, 0.05);
+  --q-code-caret: #a5b0ff;
+  --q-code-ok: #34d399;
+  --q-code-bad: #f87171;
+}
+html.dark {
+  --q-code-bg: #0d0f15;
+  --q-code-bg-2: #080a0f;
+  --q-code-dim: #6f7891;
+}
+
+/* ── 代码块的 token 配色（可选主题，配色表在 core/code-theme.js）──────────────
+   这些 class 由 core/editor.js 的 HighlightStyle **只挂名、不写颜色**产生，
+   颜色一律取自 --q-tok-* 变量；变量由 stores/quiz.js 按选中主题写到 <html> 内联样式上。
+   ⇒ 换主题 = 换一组变量，编辑器不用重建。
+   ⚠️ 选了「跟随站点」（默认）时**根本不挂这些 class**（走 CodeMirror 自带高亮），
+      所以这里不给兜底颜色也不会影响默认外观 —— 别顺手给它们写死颜色。 */
+.q-tok-kw { color: var(--q-tok-kw); }
+.q-tok-str { color: var(--q-tok-str); }
+.q-tok-com { color: var(--q-tok-com); font-style: italic; }
+.q-tok-num { color: var(--q-tok-num); }
+.q-tok-type { color: var(--q-tok-type); }
+.q-tok-fn { color: var(--q-tok-fn); }
+.q-tok-op { color: var(--q-tok-op); }
+.q-tok-prop { color: var(--q-tok-prop); }
+.q-tok-atom { color: var(--q-tok-atom); }
+.q-tok-tag { color: var(--q-tok-tag); }
+.q-tok-attr { color: var(--q-tok-attr); }
+
+/* 键盘键帽 */
+.q-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 5px;
+  font: 600 11px/1 var(--q-mono);
+  color: var(--q-text-2);
+  background: var(--q-surface-3);
+  border: 1px solid var(--q-border);
+  border-bottom-width: 2px;
+}
+
+/* --------------------------- Element Plus 对齐品牌色 --------------------------- */
+:root {
+  --el-color-primary: #6366f1;
+  --el-color-primary-light-3: #8b8ef5;
+  --el-color-primary-light-5: #a5a7f8;
+  --el-color-primary-light-7: #c7c9fb;
+  --el-color-primary-light-8: #dcddfd;
+  --el-color-primary-light-9: #eeefff;
+  --el-color-primary-dark-2: #4f52d6;
+  --el-color-success: #10b981;
+  --el-color-danger: #ef4444;
+  --el-color-warning: #f59e0b;
+  --el-border-radius-base: 10px;
+  --el-font-family: var(--q-font);
+}
+html.dark {
+  --el-color-primary: #7c7ff5;
+  --el-color-primary-light-3: #5b5ed4;
+  --el-color-primary-light-5: #4548a8;
+  --el-color-primary-light-7: #32357c;
+  --el-color-primary-light-8: #282a63;
+  --el-color-primary-light-9: #1f2148;
+  --el-bg-color: var(--q-surface);
+  --el-bg-color-overlay: var(--q-surface-2);
+  --el-fill-color-blank: var(--q-surface);
+  --el-border-color: var(--q-border);
+  --el-text-color-primary: var(--q-text);
+  --el-text-color-regular: var(--q-text-2);
+}
+
+.el-button {
+  font-weight: 600;
+}
+.el-button--primary {
+  --el-button-bg-color: var(--q-brand-1);
+  --el-button-border-color: var(--q-brand-1);
+}
+.el-dialog,
+.el-drawer {
+  --el-dialog-border-radius: var(--q-r-lg);
+}
+.el-dialog {
+  border-radius: var(--q-r-lg);
+}
+.el-tooltip__popper,
+.el-popper {
+  font-size: 12.5px;
+}
+.el-progress-bar__outer {
+  background-color: var(--q-surface-3);
+}
+
+/* --------------------------- 响应式 --------------------------- */
+@media (max-width: 900px) {
+  :root {
+    --q-stem-size: 17.5px;
+    --q-opt-size: 15.5px;
+  }
+  .q-wrap {
+    padding: 0 14px;
+  }
+}
+
+/* 打印（想印出来背题时别把按钮也印上） */
+@media print {
+  .q-no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+    background-image: none;
+  }
+}

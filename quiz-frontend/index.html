@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="通用刷题网站 —— 丢一个 JSON 题库进去就能刷" />
+    <title>刷题 · Quiz</title>
+    <!-- favicon 就是品牌标记的同一份图形（对勾 + 圆点 + 品牌渐变），
+         改了上面那个就得同步改这里，否则标签页和顶栏会长得不一样 -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='.52' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='38' fill='url(%23g)'/%3E%3Cpath d='M15.8 48.3l20 20.4L76.7 26.7' fill='none' stroke='%23fff' stroke-width='13' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='78.8' cy='75.8' r='10.4' fill='%23fff'/%3E%3C/svg%3E"
+    />
+    <style>
+      /* 首屏骨架：避免 JS 加载完之前的白屏闪烁 */
+      html,
+      body,
+      #app {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        background: #f4f6fb;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #0e1016;
+        }
+      }
+      .q-boot {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        align-items: center;
+        justify-content: center;
+        font: 14px/1.6 -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        color: #8b93a7;
+      }
+      .q-boot i {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        border: 3px solid rgba(99, 102, 241, 0.25);
+        border-top-color: #6366f1;
+        animation: q-spin 0.9s linear infinite;
+      }
+      @keyframes q-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="q-boot"><i></i><span>正在加载题库…</span></div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

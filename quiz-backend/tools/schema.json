@@ -1,0 +1,298 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.local/quiz-bank.schema.json",
+  "title": "刷题题库 JSON",
+  "description": "刷题网站唯一的输入契约。给任意 AI 这份 schema + 一段 PDF 文本，它就能产出网页直接可用的题库。除 meta.title 和 questions 外全部可选。",
+  "type": "object",
+  "required": [
+    "questions"
+  ],
+  "properties": {
+    "meta": {
+      "$ref": "#/definitions/meta"
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/question"
+      }
+    }
+  },
+  "definitions": {
+    "meta": {
+      "type": "object",
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "description": "题库唯一 id，用于区分本地进度。缺省时前端用标题的哈希代替。"
+        },
+        "title": {
+          "type": "string",
+          "description": "题库标题，显示在首页和顶栏。"
+        },
+        "subject": {
+          "type": "string",
+          "description": "科目/课程名。"
+        },
+        "description": {
+          "type": "string",
+          "description": "题库简介。"
+        },
+        "version": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string",
+          "description": "来源，例如原始 PDF 文件名。"
+        },
+        "chapters": {
+          "type": "array",
+          "description": "可选。有章节时前端会显示章节筛选。",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "name"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "tags": {
+          "type": "array",
+          "description": "可选。有标签时前端会显示标签筛选。",
+          "items": {
+            "type": "object",
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "count": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "license": {
+          "type": "string",
+          "description": "题目的许可（例如「CC BY 4.0（https://…）」）。用别人的教材/文档编译出来的题库**必须写**。"
+        },
+        "attribution": {
+          "type": "string",
+          "description": "署名：内容是谁的（CC BY 这类许可**要求署名**，不是可选装饰）。"
+        },
+        "modified": {
+          "type": "string",
+          "description": "说明做过什么修改（例如「由 AI 编译为题目 + 引用原文片段」）。CC BY 要求标注。"
+        }
+      }
+    },
+    "option": {
+      "type": "object",
+      "required": [
+        "key",
+        "text"
+      ],
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "选项标识。选择题用 A/B/C/D…；判断题固定用 T/F。"
+        },
+        "text": {
+          "type": "string",
+          "description": "选项正文。"
+        }
+      }
+    },
+    "question": {
+      "type": "object",
+      "required": [
+        "stem",
+        "answer"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "题目唯一 id。缺省时前端按顺序自动生成。"
+        },
+        "no": {
+          "type": "integer",
+          "description": "题号，用于显示和排序。"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "single",
+            "multiple",
+            "judge",
+            "code"
+          ],
+          "description": "single=单选，multiple=多选，judge=判断，**code=代码题**（见下面的 code 字段说明）。缺省时前端会依据 options/answer 自动推断。"
+        },
+        "chapter": {
+          "type": "string",
+          "description": "所属章节 id（对应 meta.chapters[].id）。"
+        },
+        "stem": {
+          "type": "string",
+          "description": "题干。填空处建议用 (  ) 占位。"
+        },
+        "options": {
+          "type": "array",
+          "description": "选项。判断题可以省略，前端会自动补上 T=正确 / F=错误。",
+          "items": {
+            "$ref": "#/definitions/option"
+          }
+        },
+        "answer": {
+          "description": "正确答案。字符串或数组都接受：\"A\"、\"AB\"、\"A,B\"、[\"A\",\"B\"]、\"正确\"、true。判断题→T/F，选择题→字母。",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "analysis": {
+          "type": "string",
+          "description": "答案解析，答完后展开显示。没有就留空，前端不会显示空块。"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "difficulty": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "source": {
+          "type": "object",
+          "description": "原文出处。教材/官方文档编译出来的题库**强烈建议每题都带**：它是 「AI 出的题可不可信」唯一能给用户的硬保证 —— 界面上会渲染成一颗「出处」按钮，点开就是原文那个锚点（见 quiz/tools/docs_to_bank.py）。没有这个字段的题库照常能用，只是点不回原文。",
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "description": "原文网址（带 #锚点 最好，能定位到具体小节）"
+            },
+            "heading": {
+              "type": "string",
+              "description": "原文里那个小标题，显示在按钮上"
+            },
+            "quote": {
+              "type": "string",
+              "description": "依据的原文片段（逐字，别改写）；悬停时会显示"
+            }
+          },
+          "required": [
+            "url"
+          ]
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "fill",
+            "spot",
+            "predict",
+            "fix"
+          ],
+          "description": "**只给代码题用**。fill=填空（code 里用 3 个及以上下划线 `___` 当空，配 blanks）；spot=找错行（answer 是被改动的行号）；predict=预测输出（等同于选择题，但可以按「运行」自己验证）；fix=修好它（用户改代码，跑出来的输出要对上 run.expect）。"
+        },
+        "code": {
+          "type": "string",
+          "description": "**只给代码题用**：这段代码会被摆出来，并可在沙箱里真跑。填空用 `___` 标空。"
+        },
+        "lang": {
+          "type": "string",
+          "description": "代码题的语言标记。只有 `js`（纯 JavaScript 片段）能在沙箱里跑 —— Vue 单文件组件、带 import/export 或碰 DOM 的片段界面上会明确说\"跑不了\"，填空／找错行照样能做。"
+        },
+        "blanks": {
+          "type": "array",
+          "description": "填空的答案，顺序和 code 里 `___` 的出现顺序一致。每项可以是字符串，也可以是 `{answer:[多个都算对的写法], hint:\"空里的灰字提示\"}`。",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "answer": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    ]
+                  },
+                  "hint": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "answer"
+                ]
+              }
+            ]
+          }
+        },
+        "run": {
+          "type": "object",
+          "description": "**只给代码题用**：跑出来应该是什么。`{expect:[\"第一行\",\"第二行\"]}` 是逐行比对；`{expect:{contains:[\"片段\"]}}` 只要求出现。修好它（fix）**必须**有它，否则这道题判不了、会被丢掉。",
+          "properties": {
+            "expect": {
+              "oneOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "contains": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
